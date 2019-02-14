@@ -15,7 +15,7 @@ jobs:
       - restore_cache:
           key: auto-deploy-test-{{ checksum ".circleci/config.yml" }}
       - run:
-          command: mvn verify -DexcludeLiveServerTests=true
+          command: mvn verify
       - save_cache:
           paths:
             - ~/.m2
@@ -24,15 +24,6 @@ jobs:
           root: .
           paths:
             - .
-      - run:
-          shell: /bin/bash -eo pipefail -O globstar
-          command: |
-            mkdir -p artifacts/cli artifacts/coverage artifacts/junit artifacts/javadoc
-            cp **/target/*.jar artifacts/
-            cp modules/cli-module/target/*standalone* artifacts/cli/
-            cp -a target/apidocs/. artifacts/javadoc/
-            cp -a modules/jacoco-aggregator-module/target/site/jacoco-aggregate/. artifacts/coverage/
-            cp -a **/target/surefire-reports/. artifacts/junit
       - store_artifacts:
           path: artifacts
       - store_test_results:
