@@ -71,7 +71,7 @@ commands:
             << parameters.versioncommand >>
             MVN_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
             echo "Releasing version ${MVN_VERSION}..."
-            mvn -s .circleci/maven-release-settings.xml clean deploy nexus-staging:release -DdeployAtEnd=true -DperformRelease=true -DskipTests
+            mvn -s .circleci/maven-release-settings.xml clean deploy -DdeployAtEnd=true -DperformRelease=true -DskipTests
             mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT versions:commit
             git commit -am "released ${MVN_VERSION}" && git push
             echo "Succesfully released ${MVN_VERSION}"
