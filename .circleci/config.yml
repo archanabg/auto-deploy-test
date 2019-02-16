@@ -53,8 +53,8 @@ commands:
     steps:
       - run:
           command: |
-            echo $SECRING_GPG_ASC_BASE64 | base64 --decode --ignore-garbage > ./secring.asc
-            gpg --batch --allow-secret-key-import --import ./secring.asc
+            echo $SECRING_GPG_ASC_BASE64 | base64 --decode > ./secring.asc
+            gpg --batch --no-tty --allow-secret-key-import --import ./secring.asc
   deploy:
     parameters:
       versioncommand:
