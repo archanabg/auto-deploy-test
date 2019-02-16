@@ -49,6 +49,12 @@ jobs:
 
 
 commands:
+  configure-gpg:
+    steps:
+      - run:
+          command: |
+            echo $SECRING_GPG_ASC_BASE64 | base64 --decode --ignore-garbage > ./secring.asc
+            gpg --batch --allow-secret-key-import --import ./secring.asc
   deploy:
     parameters:
       versioncommand:
@@ -58,6 +64,7 @@ commands:
           at: .
       - restore_cache:
           key: auto-deploy-test-{{ checksum ".circleci/config.yml" }}
+      - configure-gpg
       - run:
           command: |
             echo "Starting new release..."
