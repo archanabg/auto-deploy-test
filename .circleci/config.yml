@@ -83,8 +83,9 @@ commands:
             git config user.name "bbottema"
             git config user.email "b.bottema@projectnibble.org"
             git commit -am "released ${MVN_VERSION}"
+            git tag -a ${MVN_VERSION} -m "Release ${MVN_VERSION}"
             echo "Pushing change..."
-            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push git@github.com:bbottema/auto-deploy-test'
+            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push --tags git@github.com:bbottema/auto-deploy-test'
             echo "Succesfully released ${MVN_VERSION}"
       - save_cache:
           paths:
