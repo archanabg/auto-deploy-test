@@ -77,14 +77,14 @@ commands:
             echo "Adding github.com as known host..."
             echo $GITHUB_FINGERPRINT >> ~/.ssh/known_hosts
             echo "Setting private SSH key for pushing new version to repo..."
-            echo $GITHUB_COMMIT_KEY | base64 --decode >> ~/.ssh/id_rsa
+            echo $GITHUB_COMMIT_KEY | base64 --decode >> ./id_rsa
             chmod 400 ~/.ssh/id_rsa # prevents "UNPROTECTED PRIVATE KEY FILE" error
             echo "Comitting new version..."
             git config user.name "bbottema"
             git config user.email "b.bottema@projectnibble.org"
             git commit -am "released ${MVN_VERSION}"
             echo "Pushing change..."
-            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push git@github.com:bbottema/auto-deploy-test'
+            ssh-agent sh -c 'ssh-add ./id_rsa; git push git@github.com:bbottema/auto-deploy-test'
             echo "Succesfully released ${MVN_VERSION}"
 
 
