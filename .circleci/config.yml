@@ -52,12 +52,14 @@ commands:
   configure-gpg:
     steps:
       - run:
+          name: Configure GPG private key for signing project artifacts in OSS Sonatype
           command: |
             echo $SECRING_GPG_ASC_BASE64 | base64 --decode | gpg --batch --no-tty --import --yes
 
   configure-git:
     steps:
       - run:
+          name: Configure GIT with host fingerprint, user info and SSH key for pushing
           command: |
             mkdir -p ~/.ssh
             echo "Adding github.com as known host..."
@@ -80,6 +82,7 @@ commands:
       - configure-gpg
       - configure-git
       - run:
+          name: Release new version to Maven Central and push new project version to repo
           command: |
             echo "Starting new release..."
             << parameters.versioncommand >>
