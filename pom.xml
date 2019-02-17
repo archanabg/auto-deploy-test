@@ -6,7 +6,7 @@
 
 	<groupId>org.simplejavamail</groupId>
 	<artifactId>test-auto-deploy</artifactId>
-	<version>3.0.5</version>
+	<version>3.0.6</version>
 
 	<name>test-auto-deploy</name>
 	<description>Testing out auto-deployments with CircleCI</description>
