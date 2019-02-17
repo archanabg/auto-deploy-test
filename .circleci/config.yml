@@ -85,7 +85,8 @@ commands:
             git commit -am "released ${MVN_VERSION}"
             git tag -a ${MVN_VERSION} -m "Release ${MVN_VERSION}"
             echo "Pushing change..."
-            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push git@github.com:bbottema/auto-deploy-test --tags'
+            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push git@github.com:bbottema/auto-deploy-test'
+            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push origin --tags'
             echo "Succesfully released ${MVN_VERSION}"
       - save_cache:
           paths:
