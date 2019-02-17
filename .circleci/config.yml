@@ -72,12 +72,12 @@ commands:
             << parameters.versioncommand >>
             MVN_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
             echo "Releasing version ${MVN_VERSION}..."
-            # mvn -s .circleci/maven-release-settings.xml clean deploy -DdeployAtEnd=true -DperformRelease=true -DskipTests
+            mvn -s .circleci/maven-release-settings.xml clean deploy -DdeployAtEnd=true -DperformRelease=true -DskipTests
             mkdir -p ~/.ssh
             echo "Adding github.com as known host..."
             echo $GITHUB_FINGERPRINT >> ~/.ssh/known_hosts
             echo "Setting private SSH key for pushing new version to repo..."
-            echo $GITHUB_COMMIT_KEY | base64 --decode >> ./~/.ssh/id_rsa
+            echo $GITHUB_COMMIT_KEY | base64 --decode >> ~/.ssh/id_rsa
             chmod 400 ~/.ssh/id_rsa # prevents "UNPROTECTED PRIVATE KEY FILE" error
             echo "Comitting new version..."
             git config user.name "bbottema"
@@ -86,6 +86,10 @@ commands:
             echo "Pushing change..."
             ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push git@github.com:bbottema/auto-deploy-test'
             echo "Succesfully released ${MVN_VERSION}"
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: auto-deploy-test-{{ checksum ".circleci/config.yml" }}
 
 
 workflows:
