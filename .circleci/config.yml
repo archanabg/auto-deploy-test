@@ -75,10 +75,13 @@ commands:
             mvn -s .circleci/maven-release-settings.xml clean deploy -DdeployAtEnd=true -DperformRelease=true -DskipTests
             # mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}-SNAPSHOT versions:commit
             mkdir -p ~/.ssh
-            echo $GITHUB_FINGERPRINT  >> ~/.ssh/known_hosts
+            echo $GITHUB_FINGERPRINT >> ~/.ssh/known_hosts
+            echo $GITHUB_COMMIT_KEY | base64 --decode >> ~/.ssh/id_rsa
+            # GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa' git clone user@host:repo.git
             git config user.name "bbottema"
             git config user.email "b.bottema@projectnibble.org"
-            git commit -am "released ${MVN_VERSION}" && git push
+            git commit -am "released ${MVN_VERSION}"
+            ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git push'
             echo "Succesfully released ${MVN_VERSION}"
 
 
